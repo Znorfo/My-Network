@@ -1,0 +1,33 @@
+#! /bin/bash
+
+#1 Display Kali version
+#2 Display private Ip address, public Ip address and default gateway
+#3 Display hard disk size; free and used space
+#4 Display top five directories and their size
+#5 Display the CPU usage; refresh every 10 secs
+
+x=$(cat /etc/*-release | grep VERSION | head -n 1 | awk -F= '{print $2}')
+y=$(ifconfig | grep broadcast | awk '{print $2}')
+b=$(curl -s ifconfig.me)
+a=$(route | grep default | awk '{print $2}')
+c=$(df -h)
+d=$(du -h / 2>/dev/null | sort -rh | head -n 5)
+
+
+
+echo "Kali version is: $x"
+
+echo "Private IP is: $y"
+
+echo "Public IP is : $b"
+
+echo "Defaut gateway is :$a"
+
+echo "Hard disk size info :
+$c"
+
+echo "Top 5 directories :
+$d"
+
+while true; do echo -n "CPU usage every 10 secs:";top -bn 1 | grep '%Cpu' | sed -n '1p'; sleep 10; done
+
